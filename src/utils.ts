@@ -32,12 +32,23 @@ export const clone = <T extends Object | any[] = Object | any[]>(
 // 	return i === -1 ? [s, ''] : [s.slice(0, i), s.slice(i + 1)]
 // }
 
+export const leadingSlash = (url: string): string => {
+	if (url === '/') return url
+
+	const leading = url.endsWith('/')
+	const leadingPos = url.lastIndexOf('/')
+
+	return leading ? url.slice(0, leadingPos) + url.slice(leadingPos + 1) : url
+}
+
 export const getPath = (url: string): string => {
 	const queryIndex = url.indexOf('?')
 
-	return url.substring(
-		url.charCodeAt(0) === 47 ? 0 : url.indexOf('/', 11),
-		queryIndex === -1 ? url.length : queryIndex
+	return leadingSlash(
+		url.substring(
+			url.charCodeAt(0) === 47 ? 0 : url.indexOf('/', 11),
+			queryIndex === -1 ? url.length : queryIndex
+		)
 	)
 }
 

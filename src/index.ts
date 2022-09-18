@@ -3,7 +3,14 @@ import MedleyRouter from '@medley/router'
 
 import Context from './context'
 import { mapResponse, mapEarlyResponse } from './handler'
-import { mergeHook, isPromise, clone, mapQuery, getPath } from './utils'
+import {
+	mergeHook,
+	isPromise,
+	clone,
+	mapQuery,
+	getPath,
+	leadingSlash
+} from './utils'
 
 import type {
 	Handler,
@@ -66,12 +73,12 @@ export default class KingWorld<
 	) {
 		this.routes.push({
 			method,
-			path,
+			path: leadingSlash(path),
 			handler,
 			hooks: mergeHook(clone(this.hook) as Hook, hook as RegisterHook)
 		})
 
-		this.router.register(path)[method] = {
+		this.router.register(leadingSlash(path))[method] = {
 			handle: handler,
 			hooks: mergeHook(clone(this.hook) as Hook, hook as RegisterHook)
 		}
@@ -130,7 +137,12 @@ export default class KingWorld<
 
 		Object.values(instance.routes).forEach(
 			({ method, path, handler, hooks }) => {
-				this._addHandler(method, `${prefix}${path}`, handler, hooks)
+				this._addHandler(
+					method,
+					`${prefix}${leadingSlash(path)}`,
+					handler,
+					hooks
+				)
 			}
 		)
 

@@ -103,6 +103,7 @@ const app = new KingWorld<{
 		}>(({ query }) => {
 			if (query?.name === 'aom') return 'Hi saltyaom'
 		})
+			.get('/', () => 'GROUP ROOT')
 			.get('/hi', () => 'HI GROUP')
 			.get('/kingworld', () => 'Welcome to KINGWORLD')
 			.get('/fbk', () => 'FuBuKing')
