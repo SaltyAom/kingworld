@@ -32,7 +32,7 @@ export const clone = <T extends Object | any[] = Object | any[]>(
 // 	return i === -1 ? [s, ''] : [s.slice(0, i), s.slice(i + 1)]
 // }
 
-export const leadingSlash = (url: string): string => {
+export const parseSlash = (url: string): string => {
 	if (url === '/') return url
 
 	const leading = url.endsWith('/')
@@ -44,7 +44,7 @@ export const leadingSlash = (url: string): string => {
 export const getPath = (url: string): string => {
 	const queryIndex = url.indexOf('?')
 
-	return leadingSlash(
+	return parseSlash(
 		url.substring(
 			url.charCodeAt(0) === 47 ? 0 : url.indexOf('/', 11),
 			queryIndex === -1 ? url.length : queryIndex

@@ -9,7 +9,7 @@ import {
 	clone,
 	mapQuery,
 	getPath,
-	leadingSlash
+	parseSlash
 } from './utils'
 
 import type {
@@ -73,12 +73,12 @@ export default class KingWorld<
 	) {
 		this.routes.push({
 			method,
-			path: leadingSlash(path),
+			path: parseSlash(path),
 			handler,
 			hooks: mergeHook(clone(this.hook) as Hook, hook as RegisterHook)
 		})
 
-		this.router.register(leadingSlash(path))[method] = {
+		this.router.register(parseSlash(path))[method] = {
 			handle: handler,
 			hooks: mergeHook(clone(this.hook) as Hook, hook as RegisterHook)
 		}
@@ -139,7 +139,7 @@ export default class KingWorld<
 			({ method, path, handler, hooks }) => {
 				this._addHandler(
 					method,
-					`${prefix}${leadingSlash(path)}`,
+					`${prefix}${parseSlash(path)}`,
 					handler,
 					hooks
 				)
